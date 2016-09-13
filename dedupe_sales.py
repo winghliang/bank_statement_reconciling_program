@@ -4,22 +4,24 @@ from decimal import *
 
 '''
 
-This is a program for use by client for reconciling bank statements showing daily deposits and withdrawals related to sales
-from sales with corresponding accounting software statements tracking daily deposits and withdrawals related to sales.
+This is a program for use by client for reconciling bank statements with accounding software (in this case, Quickbooks).  In particular, 
+the client wanted to reconcile (1) daily deposits and withdrawals from sales as reflected in bank statements with (2) corresponding accounting software 
+statements tracking daily deposits and withdrawals related to those same sales.  Client uses this to ensure that all deposits to and withdrawals from
+their bank account were proper.
 
-Prior to this program being created, client had to manually (with the aid of MS Excel) reconcile the statements by manually
+Prior to this program being created, client had to manually (with the help of MS Excel) reconcile the statements by manually
 deduping entries from both lists to end up with a list of deposits or withdrawals that are not on the other list.  Using the
 resulting deduped list, the client would investigate why one list contains a deposit/withdrawal, while the other does not.
 
 This program goes through each list, creates arrays corresponding to deposits and withdrawals, and dedupes the list automatically
-to ultimately create printout of deposits and withdrawals that are not on the other list, thus save weeks of manual labor.
+to ultimately create printout of deposits and withdrawals that are not on the other list, thus avoiding significant manual labor.
 
 
 '''
 
 
 ######################################################
-# Functions for returning two arrays from CVS of bank deposits generated from Quickbooks: 
+# Functions for returning two arrays from CSV of sales/withdrawals generated from Quickbooks ("QB").  Those arrays are: 
 # 1.  An array of all deposits from sales, conslidated by date
 # 2.  an array of all withdrawals from refunds, conslidated by date
 ######################################################
@@ -95,7 +97,7 @@ consolidated_daily_withdrawals = consolidate_daily_withdrawals(all_deposits)
 
 
 ######################################################
-# Functions for returning two arrays from CVS of bank deposits generated from BANK ACCOUNT STATEMENTS: 
+# Functions for returning two arrays from CVS of bank deposits generated from BANK ACCOUNT STATEMENTS.  This arrays are: 
 # 1.  An array of all deposits from sales, conslidated by date
 # 2.  an array of all withdrawals from refunds, conslidated by date
 ######################################################
@@ -137,8 +139,11 @@ for transaction in all_bank_transactions:
 # for transaction in bank_withdrawals:
 # 	print transaction
 
+######################################################
 # Function for deduping (i.e., finding unaccounted for) entries in the accounting software statement and the bank statement
 # Returns results as a 2-item list
+######################################################
+
 def find_unaccounted(qb_array, bank_array):
 	unaccounted_for_qb_array = []
 	unaccounted_for_bank_array = list(bank_array)
@@ -170,6 +175,11 @@ unaccounted_for_bank_deposits = find_unaccounted(consolidated_daily_deposits, ba
 # Assign unaccounted for withdrawals from each list to variables
 unaccounted_for_qb_withdrawals = find_unaccounted(consolidated_daily_withdrawals, bank_withdrawals)[0]
 unaccounted_for_bank_withdrawals = find_unaccounted(consolidated_daily_withdrawals, bank_withdrawals)[1]
+
+######################################################
+# FINAL RESULTS:
+# Printing of unaccounted for withdrawals and deposits in each of (1) the bank statement and ()2 accounting software
+######################################################
 
 print '\n'
 print '*'*100
